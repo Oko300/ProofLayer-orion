@@ -1,0 +1,54 @@
+[
+  {
+    "id": "btc_stressed",
+    "market": "BTC-PERP",
+    "size_usd": 10000,
+    "leverage": 5,
+    "entry_price": 30000,
+    "current_price": 29500,
+    "funding_rate_8h": 0.003,
+    "mark_fill_spread_pct": 0.001,
+    "insurance_fund_health": 0.7,
+    "entry_timestamp": 1678886400, 
+    "current_timestamp": 1679145600 
+  },
+  {
+    "id": "eth_calm",
+    "market": "ETH-PERP",
+    "size_usd": 5000,
+    "leverage": 2,
+    "entry_price": 2000,
+    "current_price": 2010,
+    "funding_rate_8h": 0.0001,
+    "mark_fill_spread_pct": 0.0002,
+    "insurance_fund_health": 0.95,
+    "entry_timestamp": 1679059200, 
+    "current_timestamp": 1679145600 
+  }
+]
+[
+  {
+    "position_id": "POS_001",
+    "asset": "ETH",
+    "transactions": [
+      {"type": "buy", "price": 2000, "quantity": 10, "timestamp": "2026-01-01T09:00:00Z"},
+      {"type": "buy", "price": 2050, "quantity": 5, "timestamp": "2026-01-01T10:00:00Z"},
+      {"type": "sell", "price": 2100, "quantity": 3, "timestamp": "2026-01-01T11:00:00Z"}
+    ]
+  },
+  {
+    "position_id": "POS_002",
+    "asset": "BTC",
+    "transactions": [
+      {"type": "buy", "price": 40000, "quantity": 0.5, "timestamp": "2026-01-02T08:00:00Z"},
+      {"type": "sell", "price": 41000, "quantity": 0.2, "timestamp": "2026-01-02T09:00:00Z"}
+    ]
+  },
+  {
+    "position_id": "POS_003",
+    "asset": "ADA",
+    "transactions": [
+      {"type": "buy", "price": 0.50, "quantity": 1000, "timestamp": "2026-01-03T12:00:00Z"}
+    ]
+  }
+]

@@ -1,0 +1,182 @@
+[
+  {
+    "id": "whale_accumulation_debunk",
+    "wallet_address": "0xWhaleAccumulator",
+    "market": "ETH-PERP",
+    "asset_price_history": [2000, 2010, 2005, 2020, 2030],
+    "volume_history": [1000000, 1100000, 900000, 1200000, 1300000],
+    "trade_sizes": [1000, 1100, 900, 1200, 1300],
+    "funding_rates": [0.0001, 0.00015, 0.00012, 0.00018, 0.0001],
+    "social_sentiment_scores": [0.6, 0.7, 0.65, 0.72, 0.68],
+    "onchain_flows": [10000, -5000, 20000, -10000, 15000],
+    "source_data": [
+      {"id": "data_aggregator", "confidence": 0.8},
+      {"id": "social_feed_A", "confidence": 0.7},
+      {"id": "trading_bot_B", "confidence": 0.6}
+    ],
+    "attribution_analysis": {
+      "label": "exchange",
+      "confidence": 0.87,
+      "probabilities": {
+        "exchange": 0.87,
+        "accumulator": 0.05,
+        "arbitrageur": 0.04,
+        "liquidation_bot": 0.02,
+        "market_maker": 0.02
+      }
+    },
+    "ks_test_results": {
+      "wash_trade_detected": true,
+      "adjusted_organic_volume": 400000,
+      "adjusted_volume_pct": 0.40
+    },
+    "zscore_analysis": {
+      "anomaly": false,
+      "severity": "low",
+      "z_score": 0.5,
+      "total_volume": 1000000
+    },
+    "correlation_analysis": {
+      "r_value": 0.15,
+      "are_independent": true,
+      "independent_observations": 3
+    },
+    "decay_analysis": {
+      "remaining_strength": 0.66
+    },
+    "conflict_detection": {
+      "conflict": false
+    },
+    "confidence_score": 0.35,
+    "recommendation": "DO_NOT_ACT",
+    "evidence_summary": "The signal for wallet 0xWhaleAccumulator in market ETH-PERP shows a confidence score of 0.35. Wallet attributed as exchange with high confidence. Potential wash trading detected. Overall recommendation: DO_NOT_ACT."
+  },
+  {
+    "id": "genuine_smart_money",
+    "wallet_address": "0xSmartMoney",
+    "market": "BTC-PERP",
+    "asset_price_history": [30000, 30100, 30050, 30200, 30300],
+    "volume_history": [500000, 520000, 510000, 530000, 540000],
+    "trade_sizes": [500, 520, 510, 530, 540],
+    "funding_rates": [0.00005, 0.00006, 0.00005, 0.00007, 0.00006],
+    "social_sentiment_scores": [0.8, 0.85, 0.82, 0.88, 0.85],
+    "onchain_flows": [50000, 10000, 30000, 5000, 25000],
+    "source_data": [
+      {"id": "defi_lens", "confidence": 0.9},
+      {"id": "onchain_tracker", "confidence": 0.85}
+    ],
+    "attribution_analysis": {
+      "label": "accumulator",
+      "confidence": 0.73,
+      "probabilities": {
+        "accumulator": 0.73,
+        "market_maker": 0.15,
+        "arbitrageur": 0.10,
+        "exchange": 0.01,
+        "liquidation_bot": 0.01
+      }
+    },
+    "ks_test_results": {
+      "wash_trade_detected": false,
+      "adjusted_organic_volume": 490000,
+      "adjusted_volume_pct": 0.98
+    },
+    "zscore_analysis": {
+      "anomaly": false,
+      "severity": "low",
+      "z_score": 0.2,
+      "total_volume": 500000
+    },
+    "correlation_analysis": {
+      "r_value": 0.85,
+      "are_independent": true,
+      "independent_observations": 5
+    },
+    "decay_analysis": {
+      "remaining_strength": 0.92
+    },
+    "conflict_detection": {
+      "conflict": false
+    },
+    "confidence_score": 0.85,
+    "recommendation": "ACT",
+    "evidence_summary": "The signal for wallet 0xSmartMoney in market BTC-PERP shows a confidence score of 0.85. Wallet attributed as accumulator with high confidence. Overall recommendation: ACT."
+  },
+  {
+    "id": "ambiguous_signal",
+    "wallet_address": "0xAmbiguousTrader",
+    "market": "SOL-PERP",
+    "asset_price_history": [100, 101, 99, 102, 100],
+    "volume_history": [200000, 250000, 180000, 220000, 210000],
+    "trade_sizes": [200, 250, 180, 220, 210],
+    "funding_rates": [0.0002, 0.00022, 0.00019, 0.00021, 0.0002],
+    "social_sentiment_scores": [0.5, 0.6, 0.55, 0.62, 0.58],
+    "onchain_flows": [5000, -2000, 10000, -4000, 8000],
+    "source_data": [
+      {"id": "twitter_sentiment", "confidence": 0.6},
+      {"id": "discord_groups", "confidence": 0.5},
+      {"id": "whale_watcher", "confidence": 0.7}
+    ],
+    "attribution_analysis": {
+      "label": "unknown",
+      "confidence": 0.55,
+      "probabilities": {
+        "exchange": 0.3,
+        "accumulator": 0.25,
+        "arbitrageur": 0.2,
+        "liquidation_bot": 0.15,
+        "market_maker": 0.1
+      }
+    },
+    "ks_test_results": {
+      "wash_trade_detected": true,
+      "adjusted_organic_volume": 150000,
+      "adjusted_volume_pct": 0.75
+    },
+    "zscore_analysis": {
+      "anomaly": true,
+      "severity": "medium",
+      "z_score": 1.8,
+      "total_volume": 200000
+    },
+    "correlation_analysis": {
+      "r_value": 0.45,
+      "are_independent": false,
+      "independent_observations": 2
+    },
+    "decay_analysis": {
+      "remaining_strength": 0.5
+    },
+    "conflict_detection": {
+      "conflict": true,
+      "possible_cause": "Conflicting sentiment from social sources vs on-chain flows.",
+      "conflicting_sources": ["twitter_sentiment", "onchain_flows"]
+    },
+    "confidence_score": 0.50,
+    "recommendation": "CAUTION",
+    "evidence_summary": "The signal for wallet 0xAmbiguousTrader in market SOL-PERP shows a confidence score of 0.50. Anomalous volume detected with medium severity. Potential wash trading detected. Conflict among sources: Conflicting sentiment from social sources vs on-chain flows. Overall recommendation: CAUTION."
+  }
+]
+[
+  {
+    "id": "signal_001",
+    "timestamp": "2026-01-01T10:00:00Z",
+    "whale_address": "0xWhaleAddress1",
+    "transaction_value_usd": 1000000,
+    "indicator_value": 0.85
+  },
+  {
+    "id": "signal_002",
+    "timestamp": "2026-01-01T11:30:00Z",
+    "whale_address": "0xWhaleAddress2",
+    "transaction_value_usd": 500000,
+    "indicator_value": 0.92
+  },
+  {
+    "id": "signal_003",
+    "timestamp": "2026-01-01T14:00:00Z",
+    "whale_address": "0xWhaleAddress1",
+    "transaction_value_usd": 2000000,
+    "indicator_value": 0.78
+  }
+]
