@@ -80,36 +80,37 @@ class SignalConflictDetection(BaseModel):
     possible_cause: str
 
 class VerifySignalResponse(BaseModel):
-    confidence_score: float
-    recommendation: str
-    evidence_summary: str
-    zscore_analysis: SignalZscoreAnalysis
-    attribution_analysis: SignalAttributionAnalysis
-    correlation_analysis: SignalCorrelationAnalysis
-    ks_test_results: SignalKSTestResults
-    decay_analysis: SignalDecayAnalysis
-    conflict_detection: SignalConflictDetection
+    confidence_score: float = 0.0
+    recommendation: str = ""
+    evidence_summary: str = ""
+    zscore_analysis: SignalZscoreAnalysis = None
+    attribution_analysis: SignalAttributionAnalysis = None
+    correlation_analysis: SignalCorrelationAnalysis = None
+    ks_test_results: SignalKSTestResults = None
+    decay_analysis: SignalDecayAnalysis = None
+    conflict_detection: SignalConflictDetection = None
 
 
 
 class PositionCostResponse(BaseModel):
-    daily_cost_calm_usd: float
-    daily_cost_stress_usd: float
-    current_daily_cost_usd: float
-    cost_breakdown: dict
-    liquidation_price_nominal: float
-    liquidation_price_effective: float
+    daily_cost_calm_usd: float = 0.0
+    daily_cost_stress_usd: float = 0.0
+    current_daily_cost_usd: float = 0.0
+    cost_breakdown: dict = {}
+    liquidation_price_nominal: float = 0.0
+    liquidation_price_effective: float = 0.0
     liquidation_price: float = 0.0
-    margin_drained_usd: float
-    adl_score: int
-    edge_cost_ratio: float
-    recommendation: str
+    margin_drained_usd: float = 0.0
+    adl_score: int = 0
+    edge_cost_ratio: float = 0.0
+    recommendation: str = "REVIEW"
     total_cost_usd: float = 0.0
     total_unrealized_pnl_usd: float = 0.0
     collateral_ratio: float = 0.0
     projected_funding_cost_usd: float = 0.0
     maker_taker_fees_usd: float = 0.0
     potential_liquidation_impact: float = 0.0
+    exit_liquidity_slippage_usd: float = 0.0dation_impact: float = 0.0
     exit_liquidity_slippage_usd: float = 0.0
 
 
@@ -362,8 +363,16 @@ async def verify_signal(request: VerifySignalRequest):
 @router.post("/position-cost", response_model=PositionCostResponse, status_code=status.HTTP_200_OK)
 async def get_position_cost(request: PositionCostRequest):
     try:
-        cost_output = compute_position_cost(request.dict())
-        return cost_output
+        result = compute_position_cost(request.dict())
+        result["liquidation_price"] = result.get("liquidation_price_effective", 0.0)
+        result["total_cost_usd"] = result.get("daily_cost_stress_usd", 0.0) * 30
+        result["total_unrealized_pnl_usd"] = 0.0
+        result["collateral_ratio"] = 0.0
+        result["projected_funding_cost_usd"] = result.get("daily_cost_calm_usd", 0.0) * 7
+        result["maker_taker_fees_usd"] = result.get("cost_breakdown", {}).get("taker_fee_usd", 0.0)
+        result["potential_liquidation_impact"] = 0.0
+        result["exit_liquidity_slippage_usd"] = 0.0
+        return result
     except Exception as e:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e))
 
