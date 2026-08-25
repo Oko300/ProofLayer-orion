@@ -135,7 +135,7 @@ input:focus,select:focus{border-color:#7c3aed}
 <div id="root"></div>
 <script type="text/babel">
 const { useState, useEffect } = React;
-const API = "http://localhost:8000";
+const API = "http://localhost:8001";
 
 function LiveTicker({ onSelect }) {
   const [prices, setPrices] = useState([]);
@@ -412,16 +412,21 @@ function PositionCost() {
         })
       });
       const data = await res.json();
-      setResult(data);
+      if (data.detail) {
+        setErr("API validation error: " + JSON.stringify(data.detail));
+      } else {
+        setResult(data);
+      }
     } catch(e) {
-      setErr("Could not reach the backend. Make sure uvicorn is running on port 8000.");
+      setErr("Could not reach the backend. Make sure uvicorn is running on port 8001.");
     }
     setLoading(false);
   }
 
   const r = result;
-  const recClass = r?(r.recommendation==="HOLD"?"hold":r.recommendation==="REVIEW"?"review":"exit"):"";
-  const adlColor = r?(r.adl_score>70?"#f87171":r.adl_score>40?"#fbbf24":"#4ade80"):"#4ade80";
+  const safe = (val, def=0) => (val !== undefined && val !== null && !isNaN(val)) ? val : def;
+  const recClass = r?(safe(r.recommendation)==="HOLD"?"hold":r.recommendation==="REVIEW"?"review":"exit"):"";
+  const adlColor = r?(safe(r.adl_score)>70?"#f87171":safe(r.adl_score)>40?"#fbbf24":"#4ade80"):"#4ade80";
 
   return (
     <div>
@@ -466,12 +471,12 @@ function PositionCost() {
           <div className="cost-hero">
             <div className="cost-box calm">
               <div className="cost-box-label">Headline cost (what your exchange shows)</div>
-              <div className="cost-box-value">${r.daily_cost_calm_usd.toFixed(2)}</div>
+              <div className="cost-box-value">${safe(r.daily_cost_calm_usd).toFixed(2)}</div>
               <div className="cost-box-sub">per day in calm conditions</div>
             </div>
             <div className="cost-box stressed">
               <div className="cost-box-label">Real cost if funding escalates</div>
-              <div className="cost-box-value">${r.daily_cost_stress_usd.toFixed(2)}</div>
+              <div className="cost-box-value">${safe(r.daily_cost_stress_usd).toFixed(2)}</div>
               <div className="cost-box-sub">per day at 1h settlement cadence</div>
             </div>
           </div>
@@ -479,28 +484,28 @@ function PositionCost() {
           <div className="liq-bar">
             <div className="liq-row">
               <div className="liq-label">Your liquidation price at entry</div>
-              <div className="liq-value">${r.liquidation_price_nominal.toFixed(2)}</div>
+              <div className="liq-value">${safe(r.liquidation_price_nominal).toFixed(2)}</div>
             </div>
             <div className="liq-row">
               <div className="liq-label">Actual liquidation price now (funding has drifted it)</div>
-              <div className="liq-value danger">${r.liquidation_price_effective.toFixed(2)}</div>
+              <div className="liq-value danger">${safe(r.liquidation_price_effective).toFixed(2)}</div>
             </div>
             <div className="liq-row">
               <div className="liq-label">Margin already consumed by funding fees</div>
-              <div className="liq-value danger">−${r.margin_drained_usd.toFixed(2)}</div>
+              <div className="liq-value danger">−${safe(r.margin_drained_usd).toFixed(2)}</div>
             </div>
           </div>
 
           <div className="liq-bar">
             <div className="liq-row" style={{marginBottom:"4px"}}>
               <div className="liq-label">Auto-Liquidation Risk Score</div>
-              <div className="liq-value" style={{color:adlColor}}>{r.adl_score}/100</div>
+              <div className="liq-value" style={{color:adlColor}}>{safe(r.adl_score)}/100</div>
             </div>
             <div className="adl-bar-bg">
-              <div className="adl-fill" style={{width:r.adl_score+"%",background:adlColor}}></div>
+              <div className="adl-fill" style={{width:safe(r.adl_score)+"%",background:adlColor}}></div>
             </div>
             <div style={{fontSize:"0.75rem",color:"#555",marginTop:"6px"}}>
-              {r.adl_score>70?"High — your position could be forcibly closed to cover losses in the insurance fund":r.adl_score>40?"Medium — monitor your margin closely":"Low — your position looks stable for now"}
+              {safe(r.adl_score)>70?"High — your position could be forcibly closed to cover losses in the insurance fund":safe(r.adl_score)>40?"Medium — monitor your margin closely":"Low — your position looks stable for now"}
             </div>
           </div>
 
